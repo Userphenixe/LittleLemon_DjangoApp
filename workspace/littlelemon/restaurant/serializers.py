@@ -5,14 +5,14 @@ from .models import Booking, Menu
 class SerializerMenu(serializers.ModelSerializer):
     class Meta:
         model = Menu
-        fields = ['id', 'title', 'price', 'inventory']
-        extra_kwargs = {'price': {'min_value': 2},
-                        'inventory': {'min_value': 0}}
+        fields = ['id', 'Title', 'Price', 'Inventory']
+        extra_kwargs = {'Price': {'min_value': 2},
+                        'Inventory': {'min_value': 0}}
         
 class SerializerBooking(serializers.ModelSerializer):
     class Meta:
         model = Booking
-        fields = ['id', 'name', 'no_of_guests', 'bookingDate']
+        fields = ['id', 'Name', 'No_of_guests', 'BookingDate']
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
