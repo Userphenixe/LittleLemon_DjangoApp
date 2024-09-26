@@ -6,6 +6,7 @@ from .models import Menu, Booking
 from .forms import BookingForm
 from rest_framework.permissions import IsAuthenticated
 from datetime import datetime
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -22,7 +23,12 @@ class BookingListView(APIView):
         bookings = Booking.objects.all()
         serializer = SerializerBooking(bookings, many=True)
         return Response(serializer.data)
-
+    def post(self, request):
+        serializer = SerializerBooking(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def book(request):
     form = BookingForm()
     if request.method == 'POST':
@@ -39,7 +45,7 @@ class MenuItemsView(generics.ListCreateAPIView):
 
 class SingleMenuItemView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    ueryset = Menu.objects.all()
+    queryset = Menu.objects.all()
     serializer_class = SerializerMenu
 
 class BookingViewSet(viewsets.ModelViewSet):
