@@ -29,7 +29,7 @@
 ## **Technologies Used**:
 
 - **Backend**: `Django`, `Django REST Framework (DRF)`
-- **Database**: `SQLite` (or any Django-compatible database)
+- **Database**: `MySql`
 - **Frontend**: `Django templates` with integrated JavaScript for interactivity
 - **Authentication**: `JWT (JSON Web Token)`
 
