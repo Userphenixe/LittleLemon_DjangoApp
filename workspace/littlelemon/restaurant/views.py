@@ -3,10 +3,34 @@ from .serializers import SerializerMenu, SerializerBooking
 from rest_framework import generics
 from rest_framework import viewsets
 from .models import Menu, Booking
+from .forms import BookingForm
 from rest_framework.permissions import IsAuthenticated
+from datetime import datetime
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-def index(request):
-    return render(request, 'index.html', {})
+def home(request):
+    return render(request, 'home.html', {})
+
+def about(request):
+    return render(request, 'about.html', {})
+
+class BookingListView(APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        date = request.GET.get('date', datetime.today().date())
+        bookings = Booking.objects.all()
+        serializer = SerializerBooking(bookings, many=True)
+        return Response(serializer.data)
+
+def book(request):
+    form = BookingForm()
+    if request.method == 'POST':
+        form = BookingForm(request.POST)
+        if form.is_valid():
+            form.save()
+    context = {'form':form}
+    return render(request, 'book.html', context)
 
 class MenuItemsView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
